@@ -4,4 +4,12 @@ op2 = Operand(214765123324342234113414124124124241234123421123213123122311234123
 print(op)
 print(op2)
 print(op.mul(op2))
+def large_method():
+    return 1/0
 
+try:
+    large_method()
+except my_handled_exception as e:
+    print(e)
+except Exception as e:
+    print("code failed: " + e)

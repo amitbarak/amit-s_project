@@ -37,9 +37,16 @@ class Operand:
         return Operand(self.__value__ * num2.getValue())
 
     def div(self, num2):
+        if type(num2) != Operand:
+            print(f"got {num2} where an operand should be")
+        if num2 == 0:
+            print(f"cannot divide by zero {self.__value__} / 0")
         return Operand(self.__value__ / num2.getValue())
 
     def pow(self, num2):
+        if num2 == 0 and self.__value__ == 0:
+            config.error_message = "cannot pow zero by zero"
+            return Operand(1)
         return Operand(math.pow(self.__value__, num2.getValue()))
 
     def mod(self, num2):
@@ -58,7 +65,7 @@ class Operand:
             return Operand(num2.getValue())
 
     def avg(self, num2):
-        return Operand(self.mul(self.div(num2), Operand(2)))
+        return Operand(self.div(self.add(num2), Operand(2)))
 
     def negation(self):
         return Operand(self.mul(Operand(-1)))
@@ -74,15 +81,15 @@ class Operand:
             return Operand(1)
         return Operand(self.mul(Operand(self.__value__ - 1).factorial()))
 
+
+
     def digit_sum(self):
         if self.__value__ <= 0:
             print("cannot count the digit sum of a number below zero")
-            raise RuntimeError()
         chars = str(self.__value__)
         num = 0
         for c in chars:
-            if c in config.digits:
-                num += int(c)
+            num += int(c)
         return Operand(num)
 
     def __str__(self):
