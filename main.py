@@ -1,35 +1,36 @@
 import config
 from Operand import Operand
 from solve_without_brackets import solve_expression_without_brackets
+from checkValidation import isValid
+from solve_with_brackets import solve
 num_components = config.number_components
-lst_allowed = config.ok_chars
 
 end_of_expression_and_not_num = ["!", ")"]  # this needs to change
 
 
 def main():
     print("hi")
-    str_entered = input("type expression")
+    try:
+        str_entered = input("type expression")
+    except KeyboardInterrupt:
+        print("keyboard was Interrupted")
+        return
     str_entered = str_entered.replace(" ", "")  # removes all spaces
+    if not isValid(str_entered):
+        return
     print(str_entered)
-    for c in str_entered:
-        if c not in lst_allowed:
-            print("'{0}' is not allowed in the expression".format(c))
-            return
     print(num_components)
     # puts into a sufficient list
 
     lst_expression = convert_to_list(str_entered)
+    op_res_list = solve(lst_expression)
+    print()
+
     for item in lst_expression:
         print(item.__str__(), end=",")
     print()
-    op1 = solve_expression_without_brackets(lst_expression)
-    print(op1)
-    for item in lst_expression:
-        print(item.__str__(), end=",")
-
-
-
+    for item in op_res_list:
+        print(item.__str__())
 
 
 """
@@ -60,7 +61,7 @@ def convert_to_list(str_entered: str) -> list:
             if len(str_current) > 0:
                 try:
                     lst_expression.append(Operand(str_current))
-                except:
+                except ValueError:
                     print(str_current + " isn't a proper number")
                     return
             lst_expression.append(c)
@@ -76,6 +77,27 @@ def convert_to_list(str_entered: str) -> list:
     elif str_current != "":
         lst_expression.append(str_current)
     return lst_expression
+
+
+
+"""
+def solve_expression_with_brackets(lst_expression):
+    lst_expression.reverse()
+    i = 0
+    last_start = 0
+    lst_new = []
+    while (lst_expression):
+        i += 1
+        item = lst_expression.pop()
+        lst_new.append(item)
+        if item == "(":
+            last_start = i + 1
+        elif item == ")":
+            return solve_expression_without_brackets(lst_expression[last_start: i].copy())
+    return solve_expression_without_brackets(lst_expression.copy())
+    """
+
+
 
 
 if __name__ == "__main__":

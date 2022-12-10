@@ -15,7 +15,7 @@ class Operand:
             self.__value__ = num[0]
         elif type(num) is Operand:
             self.__value__ = float(num.getValue())
-
+#
     def getValue(self) -> float:
         return self.__value__
 
@@ -65,7 +65,8 @@ class Operand:
             return Operand(num2.getValue())
 
     def avg(self, num2):
-        return Operand(self.div(self.add(num2), Operand(2)))
+        op2 = self.add(num2)
+        return Operand(op2.div(Operand(2)))
 
     def negation(self):
         return Operand(self.mul(Operand(-1)))
