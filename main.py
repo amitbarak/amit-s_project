@@ -42,7 +42,7 @@ def solve_addition(lst_expression):
         item = lst_expression.pop()
         if(item == "+"):
             temp = lst_new.pop().add(item)
-            lst_new.append(temp)
+            --lst_new.append(temp)
         else:
             lst_new.append(item)
 """

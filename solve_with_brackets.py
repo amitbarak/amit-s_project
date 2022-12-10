@@ -13,7 +13,6 @@ def solve(lst_expression):
             lst_replace.append(")")
         else:
             lst_replace = get_expression_without_brackets(lst_expression)
-            print("got here")
         lst_temp2 = get_expression_without_brackets(lst_expression)
         lst_expression = replace(lst_expression, lst_replace, solve_expression_without_brackets(lst_temp2))
         lst_replace = []
