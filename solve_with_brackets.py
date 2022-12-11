@@ -14,7 +14,6 @@ def solve(lst_expression):
         lst_replace = []
     return lst_expression
 
-
 def get_lst_to_replace(lst_expression):
     lst_replace = []
     if lst_expression.count(")") != 0:

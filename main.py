@@ -59,6 +59,7 @@ def convert_to_list(str_entered: str) -> list:
     :param str_entered: the expression received from the user as String
     :return: a list containing that expression with operands and operator separated
     """
+
     lst_expression = []
     str_current = ""
     for c in str_entered:

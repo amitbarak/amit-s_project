@@ -6,4 +6,3 @@ error_message = ""
 end_of_expression_operators = ["!", ")"]
 l_brackets = ["("]
 r_brackets = [")"]
-

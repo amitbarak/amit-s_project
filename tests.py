@@ -11,3 +11,4 @@ for i in lst1:
     lst2.append(i)
 print(lst1)
 print(lst2)
+

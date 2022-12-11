@@ -111,6 +111,7 @@ def solve_regular_priority(lst_expression, sign_function: dict):
     lst_new = []
     temp = 0
 
+
     while lst_expression:
         item = lst_expression.pop()
         if item in sign_function.keys():

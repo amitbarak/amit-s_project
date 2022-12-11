@@ -130,7 +130,7 @@ class factorial(Operator):
             return Operand(1)
         return Operand(Operand(num1.getValue() - 1).factorial())
 
-
+#
 class digit_sum(Operator):
     char = "!"
 

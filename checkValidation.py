@@ -1,6 +1,7 @@
 import config
 
 
+
 def isValid(str_entered: str):
     if str_entered == "":
         print("input cant be empty")
