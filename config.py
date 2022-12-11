@@ -4,4 +4,6 @@ number_components = ok_chars[:11]
 digits = ok_chars[:10]
 error_message = ""
 end_of_expression_operators = ["!", ")"]
-#
+l_brackets = ["("]
+r_brackets = [")"]
+

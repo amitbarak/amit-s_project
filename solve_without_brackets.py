@@ -1,4 +1,5 @@
 import config
+import operators
 from Operand import Operand
 
 num_components = config.number_components
@@ -15,11 +16,11 @@ def solve_expression_without_brackets(lst_expression):
 
     lst_expression = solve_priority_minuses(lst_expression)
     lst_expression = solve_priority6(lst_expression)
-    priority5_dict = {"@": Operand.avg, "&": Operand.min, "$": Operand.max}
-    priority4_dict = {"%": Operand.mod}
-    priority3_dict = {"^": Operand.pow}
-    priority2_dict = {"*": Operand.mul, "/": Operand.div}
-    priority1_dict = {"+": Operand.add, "-": Operand.sub}
+    priority5_dict = {"@": operators.avg, "&": operators.min, "$": operators.max}
+    priority4_dict = {"%": operators.mod}
+    priority3_dict = {"^": operators.pow}
+    priority2_dict = {"*": operators.mul, "/": operators.div}
+    priority1_dict = {"+": operators.add, "-": operators.sub}
     lst_expression = solve_regular_priority(lst_expression, priority5_dict)
     lst_expression = solve_regular_priority(lst_expression, priority4_dict)
     lst_expression = solve_regular_priority(lst_expression, priority3_dict)
@@ -42,11 +43,9 @@ def solve_priority_minuses(lst_expression):
     """
     lst_expression.reverse()
     lst_new = []
-    temp = 0
     copy = lst_expression.copy()
     factor = 1
     count = 0
-    former_item = end_of_expression_and_not_num[0]
 
     if lst_expression[-1] == "-":
         item_before_minuses = None
@@ -79,7 +78,6 @@ def solve_priority_minuses(lst_expression):
             lst_new.append(item)
             count = 0
             item_before_minuses = item
-        former_item = item
     return lst_new
 
 
@@ -116,8 +114,10 @@ def solve_regular_priority(lst_expression, sign_function: dict):
     while lst_expression:
         item = lst_expression.pop()
         if item in sign_function.keys():
-            operation = sign_function.get(item)
-            temp = operation(lst_new.pop(), lst_expression.pop())
+            operator1 = sign_function.get(item)
+            print(operator1.operation)
+            temp = operator1.operation(lst_new.pop(), lst_expression.pop()) # lst_new.pop() is the former item, lst_expression.pop() is the next
+
             lst_new.append(temp)
         else:
             lst_new.append(item)

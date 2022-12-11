@@ -3,19 +3,24 @@ from Operand import Operand
 from solve_without_brackets import solve_expression_without_brackets
 from checkValidation import isValid
 from solve_with_brackets import solve
+
 num_components = config.number_components
 
 end_of_expression_and_not_num = ["!", ")"]  # this needs to change
 
 
-def main():
-    print("hi")
+def get_input():
     try:
         str_entered = input("type expression")
     except KeyboardInterrupt:
         print("keyboard was Interrupted")
         return
-    str_entered = str_entered.replace(" ", "")  # removes all spaces
+    return str_entered.replace(" ", "")
+
+
+def main():
+    print("hi")
+    str_entered = get_input()
     if not isValid(str_entered):
         return
     print(str_entered)
@@ -79,7 +84,6 @@ def convert_to_list(str_entered: str) -> list:
     return lst_expression
 
 
-
 """
 def solve_expression_with_brackets(lst_expression):
     lst_expression.reverse()
@@ -96,9 +100,6 @@ def solve_expression_with_brackets(lst_expression):
             return solve_expression_without_brackets(lst_expression[last_start: i].copy())
     return solve_expression_without_brackets(lst_expression.copy())
     """
-
-
-
 
 if __name__ == "__main__":
     main()
