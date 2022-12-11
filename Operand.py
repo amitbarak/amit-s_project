@@ -17,6 +17,7 @@ class Operand:
             self.__value__ = float(num.getValue())
 
     #
+
     def getValue(self) -> float:
         return self.__value__
 
