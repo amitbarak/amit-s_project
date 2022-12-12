@@ -15,12 +15,14 @@ def solve_expression_without_brackets(lst_expression):
     """
 
     lst_expression = solve_priority_minuses(lst_expression)
-    lst_expression = solve_priority6(lst_expression)
+    #lst_expression = solve_priority6(lst_expression)
+    priority6_dict = {"!": operators.factorial, "~": operators.negation}
     priority5_dict = {"@": operators.avg, "&": operators.min, "$": operators.max}
     priority4_dict = {"%": operators.mod}
     priority3_dict = {"^": operators.pow}
     priority2_dict = {"*": operators.mul, "/": operators.div}
     priority1_dict = {"+": operators.add, "-": operators.sub}
+    lst_expression = solve_regular_priority(lst_expression, priority6_dict)
     lst_expression = solve_regular_priority(lst_expression, priority5_dict)
     lst_expression = solve_regular_priority(lst_expression, priority4_dict)
     lst_expression = solve_regular_priority(lst_expression, priority3_dict)
@@ -95,7 +97,7 @@ def solve_priority6(lst_expression):
             temp = lst_expression.pop().negation()
             lst_new.append(temp)
         elif item == "!":
-            temp = lst_new.pop().factorial()
+            temp = lst_new.pop()
             lst_new.append(temp)
         else:
             lst_new.append(item)
@@ -110,16 +112,16 @@ def solve_regular_priority(lst_expression, sign_function: dict):
     lst_expression.reverse()
     lst_new = []
     temp = 0
-
-
+    former_item = lst_expression[-1]
     while lst_expression:
         item = lst_expression.pop()
         if item in sign_function.keys():
             operator1 = sign_function.get(item)
             print(operator1.operation)
-            temp = operator1.operation(lst_new.pop(), lst_expression.pop()) # lst_new.pop() is the former item, lst_expression.pop() is the next
-
+            temp = operator1.operation(lst_new.pop(),
+                                       lst_expression.pop())  # lst_new.pop() is the former item, lst_expression.pop() is the next
             lst_new.append(temp)
         else:
             lst_new.append(item)
+        former_item = item
     return lst_new

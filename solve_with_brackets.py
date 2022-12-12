@@ -11,8 +11,8 @@ def solve(lst_expression):
         lst_replace = get_lst_to_replace(lst_expression)
         lst_temp2 = get_expression_without_brackets(lst_expression)
         lst_expression = replace(lst_expression, lst_replace, solve_expression_without_brackets(lst_temp2))
-        lst_replace = []
-    return lst_expression
+    return Operand(lst_expression)
+
 
 def get_lst_to_replace(lst_expression):
     lst_replace = []
@@ -26,12 +26,14 @@ def get_lst_to_replace(lst_expression):
 
 
 def replace(lst: list, lst_replace: list, op1: Operand):
+    lst.reverse()
     lst_replace_size = len(lst_replace)
     lst_new = []
     lst_inside = []
     i = 0
     just_finished_removing = False
-    for item in lst:
+    while (lst):
+        item = lst.pop()
         if item == lst_replace[i] and not just_finished_removing:
             i += 1
             lst_inside.append(item)
@@ -63,13 +65,12 @@ def replace(lst: list, lst_replace: list, op1: Operand):
 
 
 def get_expression_without_brackets(lst_expression):
-    item = 0
     last_start = 0
     for i in range(len(lst_expression)):
         item = lst_expression[i]
         if item in config.l_brackets:
             last_start = i + 1
-        elif item == config.r_brackets:
+        elif item in config.r_brackets:
             solve_expression_without_brackets(lst_expression[last_start: i].copy())
             return lst_expression[last_start: i].copy()
     return lst_expression.copy()
