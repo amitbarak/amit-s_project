@@ -1,5 +1,8 @@
+import operator
+
 import config
 import operators
+from Exceptions import MissingItem
 from Operand import Operand
 
 num_components = config.number_components
@@ -11,17 +14,19 @@ end_of_expression_and_not_num = ["!", ")"]  # this needs to change
 def solve_expression_without_brackets(lst_expression):
     """
     :param lst_expression: an expression without brackets in it
-    :return: an operand with the result
+    :return: an operator with the result
     """
 
-    lst_expression = solve_priority_minuses(lst_expression)
-    #lst_expression = solve_priority6(lst_expression)
+    # lst_expression = solve_priority_minuses(lst_expression)
+
+    priority7_dict = {"#": operators.DigitSum}
     priority6_dict = {"!": operators.factorial, "~": operators.negation}
     priority5_dict = {"@": operators.avg, "&": operators.min, "$": operators.max}
     priority4_dict = {"%": operators.mod}
     priority3_dict = {"^": operators.pow}
     priority2_dict = {"*": operators.mul, "/": operators.div}
     priority1_dict = {"+": operators.add, "-": operators.sub}
+    lst_expression = solve_regular_priority(lst_expression, priority7_dict)
     lst_expression = solve_regular_priority(lst_expression, priority6_dict)
     lst_expression = solve_regular_priority(lst_expression, priority5_dict)
     lst_expression = solve_regular_priority(lst_expression, priority4_dict)
@@ -34,7 +39,7 @@ def solve_expression_without_brackets(lst_expression):
 def count_minueses_until_next_operand(lst_partial_expression):
     """
     :param lst_partial_expression: an expression starting with
-    :return: the number of minuses until next operand
+    :return: the number of minuses until next operator
     """
 
 
@@ -83,25 +88,55 @@ def solve_priority_minuses(lst_expression):
     return lst_new
 
 
-def solve_priority6(lst_expression):
+def solve_basic_expression(lst_former, lst_next, operator):
     """
-    :param lst_expression: an expression without Brackets and after inserting '-' into the operands
-    :return: the expression after replacing the priority 6 operators with their result
+    :param lst_former:
+    :param lst_next:
+    :param operator:
+    :return:
     """
-    lst_expression.reverse()
-    lst_new = []
-    temp = 0
-    while lst_expression:
-        item = lst_expression.pop()
-        if item == "~":
-            temp = lst_expression.pop().negation()
-            lst_new.append(temp)
-        elif item == "!":
-            temp = lst_new.pop()
-            lst_new.append(temp)
-        else:
-            lst_new.append(item)
-    return lst_new
+    raise_MissingItem(lst_former, lst_next, operator)
+    if operator.type == operators.OperatorTypes.BEFORE_AND_AFTER:
+        lst_former, lst_next, operand_next = get_next_operand(lst_former, lst_next, operator)
+        lst_former, lst_next, operand_former = get_former_operand(lst_former, lst_next, operator)
+        result = operator.operation(operand_former, operand_next)
+        return lst_former, lst_next, result
+    elif operator.type == operators.OperatorTypes.BEFORE:
+        lst_former, lst_next, operand_next = get_next_operand(lst_former, lst_next, operator)
+        result = operator.operation(operand_next)
+        return lst_former, lst_next, result
+    elif operator.type == operators.OperatorTypes.AFTER:
+        lst_former, lst_next, operand_former = get_former_operand(lst_former, lst_next, operator)
+        result = operator.operation(operand_former)
+        return lst_former, lst_next, result
+
+
+def get_former_operand(lst_former, lst_next, operator):
+    item = lst_former.pop()
+
+    if type(item) is Operand:
+        return lst_former, lst_next, item
+    operator1 = config.operators_dict[item]
+    return solve_basic_expression(lst_former, lst_next, operator1)
+
+
+def get_next_operand(lst_former, lst_next, operator):
+    res = 0
+    item = lst_next.pop()
+    if type(item) is Operand:
+        return lst_former, lst_next, item
+    operator1 = config.operators_dict[item]
+    return solve_basic_expression(lst_former, lst_next, operator1)
+
+
+def raise_MissingItem(lst_former, lst_next, operator):
+    operator_type = operator.type
+    if operator_type == operators.OperatorTypes.BEFORE and not lst_next:
+        raise MissingItem(f"there has to be a value before an {operator.char}")
+    if operator_type == operators.OperatorTypes.AFTER and not lst_former:
+        raise MissingItem(f"there has to be a value before an {operator.char}")
+    if operator_type == operators.OperatorTypes.BEFORE_AND_AFTER and (not lst_next or not lst_former):
+        raise MissingItem(f"there has to be a value before and after {operator.char}")
 
 
 def solve_regular_priority(lst_expression, sign_function: dict):
@@ -111,17 +146,14 @@ def solve_regular_priority(lst_expression, sign_function: dict):
     """
     lst_expression.reverse()
     lst_new = []
-    temp = 0
-    former_item = lst_expression[-1]
     while lst_expression:
         item = lst_expression.pop()
         if item in sign_function.keys():
             operator1 = sign_function.get(item)
             print(operator1.operation)
-            temp = operator1.operation(lst_new.pop(),
-                                       lst_expression.pop())  # lst_new.pop() is the former item, lst_expression.pop() is the next
+            lst_new, lst_expression, temp = solve_basic_expression(lst_new, lst_expression,
+                                                                   operator1)  # lst_new.pop() is the former item, lst_expression.pop() is the next
             lst_new.append(temp)
         else:
             lst_new.append(item)
-        former_item = item
     return lst_new

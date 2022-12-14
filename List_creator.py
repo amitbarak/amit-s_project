@@ -1,5 +1,6 @@
 import checkValidation
 import operators
+from Exceptions import Illegal_Operand
 from Operand import Operand
 import config
 
@@ -23,7 +24,11 @@ class List_creator:
             if self.char_current in config.chars_to_ignore:
                 self.next_char()
             elif self.char_current in config.number_components:
-                lst_expression.append(self.handle_operand_creation())
+                try:
+                    lst_expression.append(self.handle_operand_creation())
+                except Illegal_Operand as e:
+                    print(e)
+                    return None
             elif self.char_current in config.ok_chars:
                 lst_expression.append(self.char_current)
                 self.next_char()
@@ -36,21 +41,20 @@ class List_creator:
         operand_str = self.char_current
         self.next_char()
 
-        while self.char_current in config.number_components and self.char_current is not None:
+        while self.char_current in config.number_components  and self.char_current is not None:
             if self.char_current == '.':
                 point_count += 1
             operand_str += self.char_current
             self.next_char()
 
+        if point_count > 1:
+            raise Illegal_Operand("a number can't have more than one decimal point")
+        if operand_str.startswith('.'):
+            raise Illegal_Operand("a number can't start with an '.'")
+        if operand_str.endswith('.'):
+            raise Illegal_Operand("a number can't start with an '.'")
+        if len(operand_str) > 99:
+            raise Illegal_Operand(f"number : {operand_str} is too big")
+
         return Operand(operand_str)
 
-    def numbers_create(self, lst_strings: list):
-        lst_expression = []
-        for item in lst_strings:
-            if item not in config.not_digits and not checkValidation.print_is_operand(item):
-                return None
-            elif item not in config.not_digits:
-                lst_expression.append(Operand(item))
-            else:
-                lst_expression.append(item)
-            return lst_expression

@@ -13,8 +13,6 @@ class Operand:
             self.__value__ = float(num)
         elif type(num) is list:
             self.__value__ = Operand(num[0]).getValue()
-        elif type(num) is Operand:
-            self.__value__ = float(num.getValue())
 
 
 
@@ -22,7 +20,7 @@ class Operand:
         return self.__value__
 
     def __str__(self):
-        return "operand: " + str(self.__value__)
+        return "operator: " + str(self.__value__)
 
     def __repr__(self):
-        return "operand: " + str(self.__value__)
+        return "operator: " + str(self.__value__)

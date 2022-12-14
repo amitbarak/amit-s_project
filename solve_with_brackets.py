@@ -71,7 +71,7 @@ def get_expression_without_brackets(lst_expression):
         if item in config.l_brackets:
             last_start = i + 1
         elif item in config.r_brackets:
-            solve_expression_without_brackets(lst_expression[last_start: i].copy())
+            #solve_expression_without_brackets(lst_expression[last_start: i].copy())
             return lst_expression[last_start: i].copy()
     return lst_expression.copy()
 

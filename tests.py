@@ -4,7 +4,8 @@ op2 = Operand(214765123324342234113414124124124241234123421123213123122311234123
 print(op)
 print(op2)
 print(type(None))
-float(".")
+lst_0 = []
+print(lst_0[-1])
 lst1 = [1, 2, Operand(3)]
 lst2 = []
 for i in lst1:
