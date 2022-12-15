@@ -18,6 +18,7 @@ class List_creator:
         except StopIteration:
             self.char_current = None
 
+
     def create_lst_expression(self):
         lst_expression = []
         while self.char_current is not None:

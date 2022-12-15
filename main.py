@@ -12,10 +12,9 @@ end_of_expression_and_not_num = ["!", ")"]  # this needs to change
 def get_input():
     try:
         str_entered = input("type expression")
-        """
     except KeyboardInterrupt:
         print("keyboard was Interrupted")
-        return None"""
+        return None
     except EOFError:
         print("EOF when reading a line")
         return None
@@ -40,36 +39,6 @@ def main():
         print()
 
 
-"""
-def solve_addition(lst_expression):
-    lst_new = []
-    temp = 0
-    former_item = None
-    while(lst_expression != []):
-        item = lst_expression.pop()
-        if(item == "+"):
-            temp = lst_new.pop().add(item)
-            --lst_new.append(temp)
-        else:
-            lst_new.append(item)
-"""
-
-"""
-def solve_expression_with_brackets(lst_expression):
-    lst_expression.reverse()
-    i = 0
-    last_start = 0
-    lst_new = []
-    while (lst_expression):
-        i += 1
-        item = lst_expression.pop()
-        lst_new.append(item)
-        if item == "(":
-            last_start = i + 1
-        elif item == ")":
-            return solve_expression_without_brackets(lst_expression[last_start: i].copy())
-    return solve_expression_without_brackets(lst_expression.copy())
-    """
 
 if __name__ == "__main__":
     main()

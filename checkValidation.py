@@ -3,6 +3,7 @@ import config
 
 
 
+
 def print_is_operand(operand_str):
     point_count = 0
 

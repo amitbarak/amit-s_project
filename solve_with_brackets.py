@@ -1,77 +1,40 @@
+import Exceptions
 import config
 from Operand import Operand
 from solve_without_brackets import solve_expression_without_brackets
 
 
+
 def solve(lst_expression):
-    op_temp = Operand(1)
-    lst_temp2 = [0]
-    lst_replace = []
+    result = 0
+    lst_inner = []
     while (len(lst_expression)) != 1:
-        lst_replace = get_lst_to_replace(lst_expression)
-        lst_temp2 = get_expression_without_brackets(lst_expression)
-        lst_expression = replace(lst_expression, lst_replace, solve_expression_without_brackets(lst_temp2))
+        opening_index, closing_index = get_inner_expression(lst_expression)
+        lst_inner = lst_expression[opening_index: closing_index]
+        result = solve_expression_without_brackets(lst_inner)
+        if opening_index == 0 and closing_index == len(lst_expression):
+            lst_expression = replace(lst_expression, opening_index, closing_index, result)
+        else:
+            lst_expression = replace(lst_expression, opening_index + 1, closing_index - 1, result)
+        lst_inner = []
     return Operand(lst_expression)
 
 
-def get_lst_to_replace(lst_expression):
-    lst_replace = []
-    if lst_expression.count(")") != 0:
-        lst_replace.append("(")
-        lst_replace += get_expression_without_brackets(lst_expression)
-        lst_replace.append(")")
-    else:
-        lst_replace = get_expression_without_brackets(lst_expression)
-    return lst_replace
 
 
-def replace(lst: list, lst_replace: list, op1: Operand):
-    lst.reverse()
-    lst_replace_size = len(lst_replace)
-    lst_new = []
-    lst_inside = []
-    i = 0
-    just_finished_removing = False
-    while (lst):
-        item = lst.pop()
-        if item == lst_replace[i] and not just_finished_removing:
-            i += 1
-            lst_inside.append(item)
-            if i == lst_replace_size:
-                just_finished_removing = True
-                lst_inside = []
-                i = 0
-        elif item == lst_replace[0] and not just_finished_removing:
-            lst_inside = []
-            i = 1
-            lst_inside.append(item)
-            if i == lst_replace_size:
-                just_finished_removing = True
-                lst_inside = []
-                i = 0
-        else:
-            if not just_finished_removing:
-                lst_new += lst_inside
-                lst_inside = []
-            else:
-                just_finished_removing = False
-                lst_new.append(op1)
-            lst_new.append(item)
-    if not just_finished_removing:
-        lst_new += lst_inside
-    else:
-        lst_new.append(op1)
-    return lst_new
+def replace(lst, start_index, end_index, inserted):
+    return lst[:start_index] + [inserted] + lst[end_index:]
 
 
-def get_expression_without_brackets(lst_expression):
+def get_inner_expression(lst_expression):
     last_start = 0
     for i in range(len(lst_expression)):
         item = lst_expression[i]
         if item in config.l_brackets:
             last_start = i + 1
         elif item in config.r_brackets:
-            #solve_expression_without_brackets(lst_expression[last_start: i].copy())
-            return lst_expression[last_start: i].copy()
-    return lst_expression.copy()
+            return last_start, i
+    if last_start != 0:
+        raise Exceptions.MissingItem("there has to be closing brackets after opening brackets")
+    return 0, len(lst_expression)
 

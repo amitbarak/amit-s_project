@@ -114,16 +114,15 @@ def solve_basic_expression(lst_former, lst_next, operator):
 def get_former_operand(lst_former, lst_next, operator):
     item = lst_former.pop()
 
-    if type(item) is Operand:
+    if isinstance(item, Operand):
         return lst_former, lst_next, item
     operator1 = config.operators_dict[item]
     return solve_basic_expression(lst_former, lst_next, operator1)
 
 
 def get_next_operand(lst_former, lst_next, operator):
-    res = 0
     item = lst_next.pop()
-    if type(item) is Operand:
+    if isinstance(item, Operand):
         return lst_former, lst_next, item
     operator1 = config.operators_dict[item]
     return solve_basic_expression(lst_former, lst_next, operator1)
@@ -137,6 +136,7 @@ def raise_MissingItem(lst_former, lst_next, operator):
         raise MissingItem(f"there has to be a value before an {operator.char}")
     if operator_type == operators.OperatorTypes.BEFORE_AND_AFTER and (not lst_next or not lst_former):
         raise MissingItem(f"there has to be a value before and after {operator.char}")
+
 
 
 def solve_regular_priority(lst_expression, sign_function: dict):
