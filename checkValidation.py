@@ -1,4 +1,4 @@
-from Operand import Operand
+from Operands import Number
 import config
 
 
@@ -30,7 +30,7 @@ def is_valid(str_entered: str):
 """
 def check_str_lst(lst_strings: list):
     for item in lst_strings:
-        if item not in config.not_digits and not Operand. (item):
+        if item not in config.not_digits and not Number. (item):
             return False
     return True
 

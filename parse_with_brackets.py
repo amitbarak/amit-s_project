@@ -1,13 +1,10 @@
 import Exceptions
 import config
-from Operand import Operand
-from solve_without_brackets import solve_expression_without_brackets
+from Operands import Number
+from parse_without_brackets import solve_expression_without_brackets
 
 
-
-def solve(lst_expression):
-    result = 0
-    lst_inner = []
+def create_root_node(lst_expression):
     while (len(lst_expression)) != 1:
         opening_index, closing_index = get_inner_expression(lst_expression)
         lst_inner = lst_expression[opening_index: closing_index]
@@ -15,11 +12,8 @@ def solve(lst_expression):
         if opening_index == 0 and closing_index == len(lst_expression):
             lst_expression = replace(lst_expression, opening_index, closing_index, result)
         else:
-            lst_expression = replace(lst_expression, opening_index + 1, closing_index - 1, result)
-        lst_inner = []
-    return Operand(lst_expression)
-
-
+            lst_expression = replace(lst_expression, opening_index - 1, closing_index + 1, result)
+    return lst_expression[0]
 
 
 def replace(lst, start_index, end_index, inserted):
@@ -37,4 +31,3 @@ def get_inner_expression(lst_expression):
     if last_start != 0:
         raise Exceptions.MissingItem("there has to be closing brackets after opening brackets")
     return 0, len(lst_expression)
-

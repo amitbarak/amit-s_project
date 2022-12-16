@@ -1,7 +1,7 @@
 import checkValidation
 import operators
 from Exceptions import Illegal_Operand
-from Operand import Operand
+from Operands import Number
 import config
 
 
@@ -57,5 +57,5 @@ class List_creator:
         if len(operand_str) > 99:
             raise Illegal_Operand(f"number : {operand_str} is too big")
 
-        return Operand(operand_str)
+        return Number(operand_str)
 

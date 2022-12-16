@@ -1,9 +1,9 @@
 import config
-from Operand import Operand
+from Operands import Number
 from checkValidation import is_valid
-from solve_with_brackets import solve
+from parse_with_brackets import create_root_node
 from List_creator import List_creator
-
+from interpreter import interpret
 num_components = config.number_components
 
 end_of_expression_and_not_num = ["!", ")"]  # this needs to change
@@ -17,6 +17,7 @@ def get_input():
         return None
     except EOFError:
         print("EOF when reading a line")
+        exit(1)
         return None
     return str_entered
 
@@ -24,17 +25,17 @@ def get_input():
 def main():
     while True:
         str_entered = get_input()
-        if not str_entered: continue
         if not is_valid(str_entered): continue
         print(str_entered)
         # puts into a sufficient list
         list_creator = List_creator(str_entered)
         lst_expression = list_creator.create_lst_expression()
         if lst_expression is None: continue
-
         print(lst_expression)
-        op_res = solve(lst_expression)
-        print(op_res)
+        head = create_root_node(lst_expression)
+        if head is None: continue
+        print(head)
+        print(interpret(head))
         print()
         print()
 
