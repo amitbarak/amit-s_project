@@ -1,6 +1,7 @@
 class Illegal_Operand(Exception):
     pass
 
+
 class InvalidMath(Exception):
     pass
 

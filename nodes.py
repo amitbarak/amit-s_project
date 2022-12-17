@@ -27,6 +27,7 @@ class Node2Childs(Node):
         return f"( {self.left_operand} {self.operator.char} {self.right_operand})"
 
 
+
 class Node1Child(Node):
     def __init__(self, child_node, operator):
         super().__init__(operator)

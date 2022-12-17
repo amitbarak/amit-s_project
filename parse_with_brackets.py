@@ -1,18 +1,22 @@
 import Exceptions
+import Operands
 import config
-from Operands import Number
 from parse_without_brackets import solve_expression_without_brackets
 
 
 def create_root_node(lst_expression):
-    while (len(lst_expression)) != 1:
-        opening_index, closing_index = get_inner_expression(lst_expression)
-        lst_inner = lst_expression[opening_index: closing_index]
-        result = solve_expression_without_brackets(lst_inner)
-        if opening_index == 0 and closing_index == len(lst_expression):
-            lst_expression = replace(lst_expression, opening_index, closing_index, result)
-        else:
-            lst_expression = replace(lst_expression, opening_index - 1, closing_index + 1, result)
+    while not isinstance(lst_expression[0], Operands.Operand) or len(lst_expression) != 1:
+        try:
+            opening_index, closing_index = get_inner_expression(lst_expression)
+            lst_inner = lst_expression[opening_index: closing_index]
+            result = solve_expression_without_brackets(lst_inner)
+            if opening_index == 0 and closing_index == len(lst_expression):
+                lst_expression = replace(lst_expression, opening_index, closing_index, result)
+            else:
+                lst_expression = replace(lst_expression, opening_index - 1, closing_index + 1, result)
+        except Exceptions.MissingItem as e:
+            print(e)
+            return None
     return lst_expression[0]
 
 

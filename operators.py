@@ -67,10 +67,7 @@ class div(Operator):
 
     @staticmethod
     def operation(num1, num2):
-        if type(num2) != Number:
-            print(f"got {num2} where an operator should be")
-            return Number(1)
-        if num2 == 0:
+        if num2.get_value() == 0:
             raise InvalidMath(f"cannot divide by zero {num1.get_value()} / 0")
         try:
             return Number(num1.get_value() / num2.get_value())
@@ -149,8 +146,10 @@ class negation(Operator):
     priority = 6
 
     @staticmethod
-    def operation(num1):
-        return Number(mul.operation(num1, Number(-1)))
+    def operation(num1: Number):
+        if not num1.is_raw():
+            raise InvalidMath("~ can only be before a number")
+        return Number(-num1.get_value())
 
 
 class factorial(Operator):
@@ -199,17 +198,17 @@ class DoubleSub(Operator):
 class Minus(Operator):
     char = "_"
     type = OperatorTypes.BEFORE
-    priority = 10
+    priority = 8
 
     @staticmethod
     def operation(num1):
-        return negation.operation(num1)
+        return Number(-num1.get_value(), True)
 
 
 class DoubleMinus(Operator):
     char = "__"
     type = OperatorTypes.BEFORE
-    priority = 10
+    priority = 8
 
     @staticmethod
     def operation(num1):

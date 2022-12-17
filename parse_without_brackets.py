@@ -6,8 +6,6 @@ from Exceptions import MissingItem
 from Operands import Number, Operand
 from nodes import Node2Childs, Node, Node, Node1Child
 
-num_components = config.number_components
-lst_allowed = config.ok_chars
 
 end_of_expression_and_not_num = ["!", ")"]  # this needs to change
 
@@ -21,8 +19,7 @@ def solve_expression_without_brackets(lst_expression):
         raise MissingItem("there has to be an item inside each two corresponding brackets")
 
     lst_expression = parse_priority_minuses(lst_expression)
-    print(lst_expression)
-    lst_expression = insert_minuses_to_all_nums(lst_expression)
+    #lst_expression = insert_minuses_to_all_nums(lst_expression)
     priority8_dict = {"__": operators.DoubleMinus, "_": operators.Minus}
     priority7_dict = {"#": operators.DigitSum}
     priority6_dict = {"!": operators.factorial, "~": operators.negation}
@@ -39,18 +36,9 @@ def solve_expression_without_brackets(lst_expression):
     lst_expression = parse_regular_priority(lst_expression, priority3_dict)
     lst_expression = parse_regular_priority(lst_expression, priority2_dict)
     lst_expression = parse_regular_priority(lst_expression, priority1_dict)
+    if len(lst_expression) != 1:
+        raise MissingItem("there has to be an item between each two expressions") # for example (4)(4) generates this
     return lst_expression[0]
-
-
-def count_minueses_until_next_operand(lst_partial_expression):
-    """
-     :param lst_partial_expression: an expression starting with
-     :return: the number of minuses until next operator
-     """
-
-
-def insert_priority_minuses(lst_expression):
-    pass
 
 
 def parse_priority_minuses(lst_expression):
@@ -62,11 +50,9 @@ def parse_priority_minuses(lst_expression):
     item_current = lst_expression.pop()
     while lst_expression:
         if item_before == "-" and item_current == "-":
-            #lst_new.append("--")  # char for "--"
             item_before = "--"
             item_current = lst_expression.pop()
         elif item_before == "--" and item_current == "-":
-            #lst_new.append("-")
             item_before = "-"
             item_current = lst_expression.pop()
         else:
@@ -75,7 +61,7 @@ def parse_priority_minuses(lst_expression):
             item_current = lst_expression.pop()
     lst_new.append(item_before)
     lst_new.append(item_current)
-    return lst_new
+    return insert_minuses_to_all_nums(lst_new)
 
 
 def insert_minuses_to_all_nums(lst_expression):
@@ -87,7 +73,7 @@ def insert_minuses_to_all_nums(lst_expression):
     item_current = lst_expression.pop()
     if item_before == "--":
         item_before = "__"
-    if item_before == "-":
+    elif item_before == "-":
         item_before = "_"
     while lst_expression:
         if item_before in config.operators_dict and item_before != "-" and item_current == "-":
@@ -110,63 +96,14 @@ def insert_minuses_to_all_nums(lst_expression):
             lst_new.append(item_before)
             item_before = item_current
             item_current = lst_expression.pop()
-            pass
+
     lst_new.append(item_before)
     lst_new.append(item_current)
-    print(str(lst_new) + "hi")
     return lst_new
 
 
-def add_minuses_to_num(lst_expression):
-    if lst_expression[0] == "-":
-        return Node1Child(operators.negation)
-    if lst_expression[0] == "--":
-        return lst_expression[1:]
 
 
-def solve_priority_minuses(lst_expression):
-    """
-    :param lst_expression: an expression without Brackets and after inserting '-' into the operands
-    :return: the expression after replacing the priority 6 operators with their result
-    """
-    lst_expression.reverse()
-    lst_new = []
-    copy = lst_expression.copy()
-    factor = 1
-    count = 0
-
-    if lst_expression[-1] == "-":
-        item_before_minuses = None
-    else:
-        item_before_minuses = lst_expression[-1]
-
-    while lst_expression:
-        item = lst_expression.pop()
-        copy.pop()
-        does_contain_regular_minus = item_before_minuses in end_of_expression_and_not_num \
-                                     or type(item_before_minuses) is Number
-        if item == "-":
-            factor *= -1
-            count += 1
-        elif count >= 2 and does_contain_regular_minus:
-            lst_new.append("-")
-            if count % 2 == 0:
-                lst_new.append(item.negation())
-            else:
-                lst_new.append(item)
-        elif count >= 1 and not does_contain_regular_minus:
-            if count % 2 == 0:
-                lst_new.append(item)
-            else:
-                lst_new.append(item.negation())
-        elif count == 1:
-            lst_new.append("-")
-            lst_new.append(item)
-        else:
-            lst_new.append(item)
-            count = 0
-            item_before_minuses = item
-    return lst_new
 
 
 def parse_basic_expression(lst_former, lst_next, operator):
@@ -198,6 +135,9 @@ def get_former_operand(lst_former, lst_next, operator):
     if isinstance(item, Operand) or isinstance(item, Node):
         return lst_former, lst_next, item
     operator1 = config.operators_dict[item]
+    if operator1.type == operators.OperatorTypes.BEFORE or \
+            operator1.type == operators.OperatorTypes.BEFORE_AND_AFTER:
+        raise MissingItem(f"{operator.char} can't come after {operator1.char}")
     return parse_basic_expression(lst_former, lst_next, operator1)
 
 
@@ -206,6 +146,9 @@ def get_next_operand(lst_former, lst_next, operator):
     if isinstance(item, Number) or isinstance(item, Node):
         return lst_former, lst_next, item
     operator1 = config.operators_dict[item]
+    if operator1.type == operators.OperatorTypes.AFTER or \
+            operator1.type == operators.OperatorTypes.BEFORE_AND_AFTER:
+        raise MissingItem(f"{operator.char} can't come before {operator1.char}")
     return parse_basic_expression(lst_former, lst_next, operator1)
 
 
@@ -230,7 +173,6 @@ def parse_regular_priority(lst_expression, sign_function: dict):
         item = lst_expression.pop()
         if item in sign_function.keys():
             operator1 = sign_function.get(item)
-            print(operator1.operation)
             lst_new, lst_expression, temp = parse_basic_expression(lst_new, lst_expression,
                                                                    operator1)  # lst_new.pop() is the former item, lst_expression.pop() is the next
             lst_new.append(temp)
