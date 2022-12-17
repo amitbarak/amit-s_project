@@ -42,7 +42,7 @@ class List_creator:
         operand_str = self.char_current
         self.next_char()
 
-        while self.char_current in config.number_components  and self.char_current is not None:
+        while self.char_current in config.number_components and self.char_current is not None:
             if self.char_current == '.':
                 point_count += 1
             operand_str += self.char_current

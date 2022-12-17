@@ -14,8 +14,9 @@ class OperatorTypes:
 class Operator:
 
     @staticmethod
-    def operation():
-        raise RuntimeError("this is an empty operator")
+    def operation(num1, *args, **kwargs):
+        return num1
+
 
 
 class add(Operator):
@@ -185,3 +186,31 @@ class DigitSum(Operator):
         return Number(num)
 
 
+class DoubleSub(Operator):
+    char = "--"
+    type = OperatorTypes.BEFORE_AND_AFTER
+    priority = 1
+
+    @staticmethod
+    def operation(num1, num2):
+        return add.operation(num1, num2)
+
+
+class Minus(Operator):
+    char = "_"
+    type = OperatorTypes.BEFORE
+    priority = 10
+
+    @staticmethod
+    def operation(num1):
+        return negation.operation(num1)
+
+
+class DoubleMinus(Operator):
+    char = "__"
+    type = OperatorTypes.BEFORE
+    priority = 10
+
+    @staticmethod
+    def operation(num1):
+        return num1

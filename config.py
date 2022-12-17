@@ -9,7 +9,7 @@ not_digits = ok_chars[10:]
 operators_dict = {"-": operators.sub, "+" : operators.add, "/": operators.div, "*" : operators.mul,
                   "^": operators.pow, "%": operators.mod, "$": operators.max, "@": operators.avg,
                   "&": operators.min, "~": operators.negation, "!": operators.factorial,
-                  "#": operators.DigitSum}
+                  "#": operators.DigitSum, "--": operators.DoubleSub, "_": operators.Minus, "__" : operators.DoubleMinus}
 chars_to_ignore = [" "]
 error_message = ""
 end_of_expression_operators = ["!", ")"]

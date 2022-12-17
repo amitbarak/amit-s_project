@@ -19,50 +19,116 @@ def solve_expression_without_brackets(lst_expression):
     """
     if len(lst_expression) == 0:
         raise MissingItem("there has to be an item inside each two corresponding brackets")
-    # lst_expression = solve_priority_minuses(lst_expression)
 
+    lst_expression = parse_priority_minuses(lst_expression)
+    print(lst_expression)
+    lst_expression = insert_minuses_to_all_nums(lst_expression)
+    priority8_dict = {"__": operators.DoubleMinus, "_": operators.Minus}
     priority7_dict = {"#": operators.DigitSum}
     priority6_dict = {"!": operators.factorial, "~": operators.negation}
     priority5_dict = {"@": operators.avg, "&": operators.min, "$": operators.max}
     priority4_dict = {"%": operators.mod}
     priority3_dict = {"^": operators.pow}
     priority2_dict = {"*": operators.mul, "/": operators.div}
-    priority1_dict = {"+": operators.add, "-": operators.sub}
-    lst_expression = solve_regular_priority(lst_expression, priority7_dict)
-    lst_expression = solve_regular_priority(lst_expression, priority6_dict)
-    lst_expression = solve_regular_priority(lst_expression, priority5_dict)
-    lst_expression = solve_regular_priority(lst_expression, priority4_dict)
-    lst_expression = solve_regular_priority(lst_expression, priority3_dict)
-    lst_expression = solve_regular_priority(lst_expression, priority2_dict)
-    lst_expression = solve_regular_priority(lst_expression, priority1_dict)
+    priority1_dict = {"+": operators.add, "-": operators.sub, "--": operators.DoubleSub}
+    lst_expression = parse_regular_priority(lst_expression, priority8_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority7_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority6_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority5_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority4_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority3_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority2_dict)
+    lst_expression = parse_regular_priority(lst_expression, priority1_dict)
     return lst_expression[0]
 
-"""
+
 def count_minueses_until_next_operand(lst_partial_expression):
-    
+    """
      :param lst_partial_expression: an expression starting with
      :return: the number of minuses until next operator
-    
-def solve_priority_minuses2(lst_expression):
-    if len(lst_expression) <= 2:
-        return lst_expression
-    lst_expression.reverse()
-    operand1 = lst_expression.pop()
-    if operand1 == "-":
-        operator1 = operators.negation
-        result = Node1Child(solve_priority_minuses2(lst_expression), operator1)
-        return [result] + lst_expression
-    else:
-        return solve_priority_minuses1(lst_expression)
+     """
 
-def solve_priority_minuses1(lst_expression):
+
+def insert_priority_minuses(lst_expression):
     pass
 
+
+def parse_priority_minuses(lst_expression):
+    if len(lst_expression) == 1:
+        return lst_expression
+    lst_expression.reverse()
+    lst_new = []
+    item_before = lst_expression.pop()
+    item_current = lst_expression.pop()
+    while lst_expression:
+        if item_before == "-" and item_current == "-":
+            #lst_new.append("--")  # char for "--"
+            item_before = "--"
+            item_current = lst_expression.pop()
+        elif item_before == "--" and item_current == "-":
+            #lst_new.append("-")
+            item_before = "-"
+            item_current = lst_expression.pop()
+        else:
+            lst_new.append(item_before)
+            item_before = item_current
+            item_current = lst_expression.pop()
+    lst_new.append(item_before)
+    lst_new.append(item_current)
+    return lst_new
+
+
+def insert_minuses_to_all_nums(lst_expression):
+    if len(lst_expression) == 1:
+        return lst_expression
+    lst_expression.reverse()
+    lst_new = []
+    item_before = lst_expression.pop()
+    item_current = lst_expression.pop()
+    if item_before == "--":
+        item_before = "__"
+    if item_before == "-":
+        item_before = "_"
+    while lst_expression:
+        if item_before in config.operators_dict and item_before != "-" and item_current == "-":
+            operator_before = config.operators_dict[item_before]
+            if operator_before.type != operators.OperatorTypes.AFTER:
+                item_current = "_"
+            else:
+                lst_new.append(item_before)
+                item_before = item_current
+                item_current = lst_expression.pop()
+        elif item_before in config.operators_dict and item_before != "--" and item_current == "--":
+            operator_before = config.operators_dict[item_before]
+            if operator_before.type != operators.OperatorTypes.AFTER:
+                item_current = "__"
+            else:
+                lst_new.append(item_before)
+                item_before = item_current
+                item_current = lst_expression.pop()
+        else:
+            lst_new.append(item_before)
+            item_before = item_current
+            item_current = lst_expression.pop()
+            pass
+    lst_new.append(item_before)
+    lst_new.append(item_current)
+    print(str(lst_new) + "hi")
+    return lst_new
+
+
+def add_minuses_to_num(lst_expression):
+    if lst_expression[0] == "-":
+        return Node1Child(operators.negation)
+    if lst_expression[0] == "--":
+        return lst_expression[1:]
+
+
 def solve_priority_minuses(lst_expression):
-    
+    """
     :param lst_expression: an expression without Brackets and after inserting '-' into the operands
     :return: the expression after replacing the priority 6 operators with their result
-    
+    """
     lst_expression.reverse()
     lst_new = []
     copy = lst_expression.copy()
@@ -102,7 +168,6 @@ def solve_priority_minuses(lst_expression):
             item_before_minuses = item
     return lst_new
 
-"""
 
 def parse_basic_expression(lst_former, lst_next, operator):
     """
@@ -147,15 +212,14 @@ def get_next_operand(lst_former, lst_next, operator):
 def raise_MissingItem(lst_former, lst_next, operator):
     operator_type = operator.type
     if operator_type == operators.OperatorTypes.BEFORE and not lst_next:
-        raise MissingItem(f"there has to be a value before an {operator.char}")
+        raise MissingItem(f"there has to be a value after an {operator.char}")
     if operator_type == operators.OperatorTypes.AFTER and not lst_former:
         raise MissingItem(f"there has to be a value before an {operator.char}")
     if operator_type == operators.OperatorTypes.BEFORE_AND_AFTER and (not lst_next or not lst_former):
         raise MissingItem(f"there has to be a value before and after {operator.char}")
 
 
-
-def solve_regular_priority(lst_expression, sign_function: dict):
+def parse_regular_priority(lst_expression, sign_function: dict):
     """
     :param lst_expression: an expression without Brackets and after inserting '-' into the operands
     :return: the expression after replacing the priority's operators with their result
