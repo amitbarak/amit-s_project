@@ -1,5 +1,3 @@
-import checkValidation
-import operators
 from Exceptions import Illegal_Operand
 from Operands import Number
 import config

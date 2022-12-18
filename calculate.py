@@ -1,4 +1,4 @@
-
+import config
 from checkValidation import is_valid
 from parse_with_brackets import create_root_node
 from List_creator import List_creator
@@ -23,7 +23,8 @@ def main():
     while True:
         str_entered = get_input()
         result = calculate(str_entered)
-        print(result)
+        if result is not None:
+            print(result)
 
 
 if __name__ == "__main__":

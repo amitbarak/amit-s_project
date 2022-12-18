@@ -27,7 +27,12 @@ def is_valid(str_entered: str):
         if check_brackets < 0:
             print("there are more closing brackets than opening brackets from the start until index: {0}".format(i))
             return False
+
         if c == operators.Negation.CHAR:
+            if was_negation == True:
+                print(f"negation must be close to a number or a sequence of numbers,"
+                        f" index of wrong charcter after negation: {i}")
+                return False
             was_negation = True
             negation_to_digits += c
         elif was_negation:
@@ -42,7 +47,6 @@ def is_valid(str_entered: str):
 
         if c not in config.CHARS_TO_IGNORE:
             is_empty = False
-
 
     if is_empty:
         print("input only contains empty chars")

@@ -112,7 +112,7 @@ class Div(Operator):
         try:
             return Number(num1.get_value() / num2.get_value())
         except ValueError as e:
-            raise InvalidMath(f"cannot divide: {num1.get_value} by  {num2.get_value()} because result is out of range")
+            raise InvalidMath(f"cannot divide: {num1.get_value()} by  {num2.get_value()} because result is out of range")
 
 
 class Power(Operator):
@@ -146,6 +146,13 @@ class Mode(Operator):
 
     @staticmethod
     def operation(num1: Number, num2: Number):
+        if num2.get_value() == 0:
+            raise InvalidMath(f"cannot mode by zero {num1.get_value()} % 0")
+        try:
+            return Number(num1.get_value() % num2.get_value())
+        except ValueError as e:
+            raise InvalidMath(f"cannot mode: {num1.get_value()} by  {num2.get_value()} because result is out of range")
+
         return Number(num1.get_value() % num2.get_value())
 
 
@@ -159,7 +166,7 @@ class Max(Operator):
 
     @staticmethod
     def operation(num1: Number, num2: Number):
-        if (num1.get_value() > num2.get_value()):
+        if num1.get_value() > num2.get_value():
             return Number(num1.get_value())
         else:
             return Number(num2.get_value())
@@ -237,7 +244,7 @@ class DigitSum(Operator):
 
     @staticmethod
     def get_priority():
-        return 7
+        return 8
 
     @staticmethod
     def operation(num1: Number):
@@ -268,11 +275,11 @@ class DoubleSub(Operator):
 class Minus(Operator):
     CHAR = "_"
     TYPE = OperatorTypes.BEFORE
-    priority = 8
+    priority = 7
 
     @staticmethod
     def get_priority():
-        return 8
+        return 7
 
     @staticmethod
     def operation(num1: Number):
@@ -285,7 +292,7 @@ class DoubleMinus(Operator):
 
     @staticmethod
     def get_priority():
-        return 8
+        return 7
 
     @staticmethod
     def operation(num1: Number):

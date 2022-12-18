@@ -1,4 +1,6 @@
 import math
+
+
 class Operand:
     def __init__(self):
         pass
@@ -7,24 +9,22 @@ class Operand:
         pass
 
 
+
 class Number(Operand):
     def __init__(self, num: float):
         from config import ROUNDING_COUNT
         super().__init__()
         if type(num) is Number:
-            self.__value = round(num.get_value(), ROUNDING_COUNT)
+            self.__value = num.get_value()
         elif type(num) is int or type(num) is float:
-            self.__value = round(float(num), ROUNDING_COUNT)
-        elif type(num) is str:  # there is only need to check 'num' of it's a string
-            self.__value = round(float(num), ROUNDING_COUNT)
+            self.__value = float(num)
+        elif type(num) is str:
+            self.__value = float(num)
         elif type(num) is list:
             self.__value = Number(num[0]).get_value()
 
     def get_value(self):
         return self.__value
-
-    def is_raw(self):
-        return self.__is_raw
 
     def __str__(self):
         return "number: " + str(self.__value)
