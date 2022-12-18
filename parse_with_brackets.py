@@ -28,9 +28,9 @@ def get_inner_expression(lst_expression):
     last_start = 0
     for i in range(len(lst_expression)):
         item = lst_expression[i]
-        if item in config.l_brackets:
+        if item in config.L_BRACKETS:
             last_start = i + 1
-        elif item in config.r_brackets:
+        elif item in config.R_BRACKETS:
             return last_start, i
     if last_start != 0:
         raise Exceptions.MissingItem("there has to be closing brackets after opening brackets")

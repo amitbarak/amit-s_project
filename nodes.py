@@ -24,7 +24,7 @@ class Node2Childs(Node):
         return self.operator.operation(self.left_operand.get_value(), self.right_operand.get_value())
 
     def __repr__(self):
-        return f"( {self.left_operand} {self.operator.char} {self.right_operand})"
+        return f"( {self.left_operand} {self.operator.CHAR} {self.right_operand})"
 
 
 
@@ -38,4 +38,4 @@ class Node1Child(Node):
         return self.operator.operation(self.child_node.get_value())
 
     def __repr__(self):
-        return f"({self.child_node}{self.operator.char})"
+        return f"({self.child_node}{self.operator.CHAR})"

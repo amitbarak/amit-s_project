@@ -6,6 +6,7 @@ from interpreter import interpret
 from recive_input import get_input
 
 
+
 def calculate(str_entered):
     if not is_valid(str_entered): return None
     # puts into a sufficient list

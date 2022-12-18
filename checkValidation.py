@@ -1,3 +1,4 @@
+import operators
 from Operands import Number
 import config
 
@@ -10,28 +11,46 @@ def is_valid(str_entered: str):
         return False
     i = 0
     check_brackets = 0
-    char_before = ""
+    negation_to_digits = []
+    was_negation = False
     is_empty = True
     for c in str_entered:
-        if c in config.chars_to_ignore: continue
+        if c in config.CHARS_TO_IGNORE: continue
         i += 1
-        if c not in config.ok_chars and c not in config.chars_to_ignore:
+        if c not in config.VALID_CHARS and c not in config.CHARS_TO_IGNORE:
             print("'{0}' is not allowed in the expression and was fount at index: {1}".format(c, i))
             return False
-        elif c == "(":
+        elif c == config.R_BRACKETS[0]:
             check_brackets += 1
-        elif c == ")":
+        elif c == config.R_BRACKETS[0]:
             check_brackets -= 1
         if check_brackets < 0:
             print("there are more closing brackets than opening brackets from the start until index: {0}".format(i))
             return False
-        char_before = c
-        if c not in config.chars_to_ignore:
+        if c == operators.Negation.CHAR:
+            was_negation = True
+            negation_to_digits += c
+        elif was_negation:
+            if c not in (config.NUMBER_COMPONENTS + config.L_BRACKETS):
+                    print(f"negation must be close to a number or a sequence of numbers,"
+                          f" index of wrong charcter after negation: {i}")
+                    return False
+            elif c in config.DIGITS:
+                was_negation = False
+            else:
+                negation_to_digits += c
+
+        if c not in config.CHARS_TO_IGNORE:
             is_empty = False
+
+
     if is_empty:
         print("input only contains empty chars")
         return False
+
     return True
+
+
 
 
 """

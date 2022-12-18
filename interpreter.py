@@ -1,5 +1,5 @@
 import Exceptions
-from nodes import Node2Childs, Node, Node, Node1Child
+from nodes import Node2Childs, Node, Node1Child
 
 
 def interpret(node_head: Node):
