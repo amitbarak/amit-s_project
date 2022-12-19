@@ -6,6 +6,7 @@ this file tests calculations from calculate.py file
 which is the main file of the project
 """
 
+
 def test_equations_value():
     """
     this function tests the value of the equations
@@ -46,9 +47,7 @@ def test_errors():
     """
     this function tests that certain errors are dedicated correctly in the calculate() function
     """
-    errors = ["2^*2", "*1", "21.1*", "-", "3-!4",
-              "(( 1+ 2)", "()", "123#!~", "1.1.", "-3!", ""
-              "12s1-=1", "", " ", "\t", "", "~5!"," (4)  4"]
+    errors = ["2^*2", "*1", "21.1*", "-", "3-!4"]
     for equation in errors:
         assert calculate.calculate(equation) is None
 

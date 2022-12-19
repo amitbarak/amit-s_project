@@ -177,9 +177,11 @@ def parse_minuses(lst_expression):
 
 def parse_priority_minuses(lst_expression):
     """
-    this function parses the minuses in the expression into: double_minus, minus, double_sub and returns the result
+    this function parses the sub chars in the expression into:
+    singular subs and double subs and returns the changed list
+    (for example: [-,-,1] --> [--, 1] and ---1 --> [-, 1] )
     :param lst_expression: an expression containing a list of the items in the mathematical expression
-    :return:
+    :return: the list after it's subs chars were transferred to double or singular subs
     """
     if len(lst_expression) == 1:
         return lst_expression
@@ -187,12 +189,14 @@ def parse_priority_minuses(lst_expression):
     lst_new = []
     item_before = lst_expression.pop()
     item_current = lst_expression.pop()
+    SUB_CHAR = operators.Sub.CHAR
+    DOUBLE_SUB_CHAR = operators.DoubleSub.CHAR
     while lst_expression:
-        if item_before == "-" and item_current == "-":
-            item_before = "--"
+        if item_before == SUB_CHAR and item_current == SUB_CHAR:
+            item_before = DOUBLE_SUB_CHAR
             item_current = lst_expression.pop()
-        elif item_before == "--" and item_current == "-":
-            item_before = "-"
+        elif item_before == DOUBLE_SUB_CHAR and item_current == SUB_CHAR:
+            item_before = SUB_CHAR
             item_current = lst_expression.pop()
         else:
             lst_new.append(item_before)
