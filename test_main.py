@@ -1,16 +1,23 @@
 import pytest
 import calculate
-import os
 
+"""
+this file tests calculations from calculate.py file
+which is the main file of the project
+"""
 
 def test_equations_value():
+    """
+    this function tests the value of the equations
+    that has values
+    """
     equations_with_value = {"2^3": 8, "~--2": -2, "(1 / 2) ^ 2": 0.25, "(123 * 2)#": 12,
                             "~-5!": 120, "---~5 $ 3": 5, "-3--2 @ 1": -1.5, "123# @ 0.1": 3.05, "5!#": 3,
                             "-1/2": -0.5, "-7&1": -7, "1.01 + -~1!": 2.01, "31 % -2": -1,
                             "-1/~--2": 0.5, "1 - - ~-3!": 7,
                             "(2 +-- 0.5 * 3 ^ 2 % 3 @ 41# + -~0.5)! * 2": 10080,
                             "(2---3! + 4!-~3 - 4.5 * 0.0001 * 10 ^ 4 * (3-1) + 1) $ 10.4 ": 15,
-                            "(2 ---1!) + (4!)# + ((4!#!)) + ~1 @ 3": 728,
+                            "(2 ---1!)  + (4!#!) + (4!)# + ~1 @ 3": 728,
                             "-~5!# * 3 @ 1 + -1 ^ 4 + ((2)) * ((4 ^ -~-2.00)) ": 7.125,
                             "(4! + 2 * 3 $ (1 / (0.1) / (1 / 3) * 1000 % 2) & 10000)": 30,
                             "(4! + 2 * 3 $ (1 / (0.1) / (1 / 3) * 1000 % 3) & 10000)": 84,
@@ -28,8 +35,6 @@ def test_equations_value():
                             "((((((--2!!!! ^ ~-2!!!!# -- 3!!#))))))": (9 + 4),
                             "(1 / 2 / 3 / 4 / 5 / 6 ) * 6!": 1
 
-
-
                             }
     for equation, result in equations_with_value.items():
         assert calculate.calculate(equation).get_value() == result
@@ -37,12 +42,12 @@ def test_equations_value():
 
 
 def test_errors():
+    """
+    this function tests that certain errors are dedicated correctly in the calculate() function
+    """
     errors = ["2^*2", "*1", "21.1*", "-", "3-!4",
               "(( 1+ 2)", "()", "123#!~", "1.1.", "-3!", ""
-                                                         "12s1-=1", "", " ", "\t", "", "~5!"]
+              "12s1-=1", "", " ", "\t", "", "~5!"," (4)  4"]
     for equation in errors:
         assert calculate.calculate(equation) is None
 
-
-def test_6():
-    lst_strs_entered = [""]
