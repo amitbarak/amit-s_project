@@ -12,7 +12,7 @@ def get_input():
     :return: the input from the user
     """
     try:
-        str_entered = input("TYPE expression")
+        str_entered = input("type an expression that will be calculated: ")
     except KeyboardInterrupt:
         print("\nkeyboard was Interrupted")
         exit(1)

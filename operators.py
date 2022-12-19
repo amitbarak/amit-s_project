@@ -479,13 +479,17 @@ class Factorial(Operator):
 
     @staticmethod
     def factorial(num1):
+        """a helper function to the operation of the factorial class
+        :param num1: a number that the factorial operation is performed on
+        :raises InvalidMath: if the number is not a natural number or result is too large"""
+
         if int(num1.get_value()) != num1.get_value():
             raise InvalidMath("cannot Factorial a number that's not an integer")
         if num1.get_value() <= 0:
             raise InvalidMath("cannot Factorial a number that's not above zero")
         if num1.get_value() == 1:
             return Number(1)
-        result_before = Factorial.operation(Number(num1.get_value() - 1)).get_value()
+        result_before = Factorial.factorial(Number(num1.get_value() - 1)).get_value()
         if str(result_before) == "inf":
             raise InvalidMath("cannot factorial because result is too large")
         return Number(result_before * num1.get_value())

@@ -1,6 +1,7 @@
 import custom_exceptions
 import operands
 import config
+from nodes import Node
 from parse_without_brackets import solve_expression_without_brackets
 
 
@@ -32,7 +33,7 @@ def create_root_node(lst_expression):
         except custom_exceptions.MissingItem as e:
             print(e)
             return None
-    return lst_expression[0]
+    return Node(lst_expression[0])
 
 
 def replace(lst, start_index, end_index, inserted):
@@ -61,6 +62,4 @@ def get_inner_expression(lst_expression):
             last_start = i + 1
         elif item in config.R_BRACKETS:
             return last_start, i
-    if last_start != 0:
-        raise custom_exceptions.MissingItem("there has to be closing brackets after opening brackets")
     return 0, len(lst_expression)

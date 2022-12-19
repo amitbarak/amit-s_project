@@ -7,7 +7,7 @@ contains the function is_valid which checks the validation of the string express
 """
 
 
-def is_valid(str_expression: str):
+def is_valid(str_expression: str) -> bool:
     """
     this function receives a string that represents a mathematical expression and
     checks the validation of it's chars, it's brackets and it's ~ operators
@@ -29,13 +29,13 @@ def is_valid(str_expression: str):
     for c in str_expression:
         if c in config.CHARS_TO_IGNORE: continue
         i += 1
-        # check if the char is valid
+        # checks if the char is valid
         if c not in config.VALID_CHARS and c not in config.CHARS_TO_IGNORE:
             print("'{0}' is not allowed in the expression and was fount at index: {1}".format(c, i))
             return False
 
-        # check if brackets are valid
-        if c == config.R_BRACKETS[0]:
+        # checks if brackets are valid
+        if c == config.L_BRACKETS[0]:
             check_brackets += 1
         if c == config.R_BRACKETS[0]:
             check_brackets -= 1
@@ -43,9 +43,9 @@ def is_valid(str_expression: str):
             print("there are more closing brackets than opening brackets from the start until index: {0}".format(i))
             return False
 
-        # check negation
+        # checks negation
         if c == operators.Negation.CHAR:
-            if was_negation == True:
+            if was_negation:
                 print(f"negation must be close to a number or a sequence of numbers,"
                       f" index of wrong charcter after negation: {i}")
                 return False
@@ -65,8 +65,13 @@ def is_valid(str_expression: str):
         if c not in config.CHARS_TO_IGNORE:
             is_empty = False
 
+    if check_brackets != 0:
+        print("there is a difrence between the number of opening brackets and the number of closing brackets")
+        return False
     if is_empty:
         print("input only contains empty chars")
         return False
 
     return True
+
+

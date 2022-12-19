@@ -1,10 +1,19 @@
 """this file only contains:
 List_creator class: Transfers the input received into a list that contains Numbers and operators chars
+remove_tabs function: removes all tabs from the input
 """
 
 from custom_exceptions import Illegal_Operand
 from operands import Number
 import config
+
+
+def remove_tabs(text):
+    """removes all tabs and spaces from the input"""
+    text = text.split()
+    text = ''.join(text)
+    return text
+
 
 class List_creator:
     """
@@ -27,6 +36,7 @@ class List_creator:
     """
     def __init__(self, str_expression):
         """initializes the class with the string of the expression"""
+        str_expression = remove_tabs(str_expression)
         self.char_current = None
         self.text = iter(str_expression)
         self.next_char()
@@ -34,7 +44,6 @@ class List_creator:
     def next_char(self):
         """
         moves the iterator to the next char that is not in config.CHARS_TO_IGNORE
-        :return: None
         """
         try:
             self.char_current = next(self.text)

@@ -1,4 +1,5 @@
 from checkValidation import is_valid
+from operands import Number
 from parse_with_brackets import create_root_node
 from list_creator import List_creator
 from interpreter import interpret
@@ -17,7 +18,7 @@ METHODS:
 """
 
 
-def calculate(str_expression: str):
+def calculate(str_expression: str) -> Number:
     """
     this function receives a string that represents a mathematical expression
      and returns the result of the calculation
@@ -44,7 +45,7 @@ def main():
         str_entered = get_input()
         result = calculate(str_entered)
         if result is not None:
-            print("the result is: " ,result.get_value())
+            print("the result is: ",result.get_value())
 
 
 if __name__ == "__main__":
