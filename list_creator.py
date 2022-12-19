@@ -1,6 +1,7 @@
 """this file only contains:
 List_creator class: Transfers the input received into a list that contains Numbers and operators chars
-remove_tabs function: removes all tabs from the input
+
+remove_tabs function: removes all tabs and spaces from a string
 """
 
 from custom_exceptions import Illegal_Operand
@@ -8,8 +9,8 @@ from operands import Number
 import config
 
 
-def remove_tabs(text):
-    """removes all tabs and spaces from the input"""
+def remove_tabs(text: str) -> str:
+    """removes all tabs and spaces from a string"""
     text = text.split()
     text = ''.join(text)
     return text

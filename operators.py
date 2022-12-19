@@ -1,8 +1,3 @@
-import math
-
-from custom_exceptions import InvalidMath
-from operands import Number
-
 """
 in this file we define all the operators classes that we want to use in our calculator:
 addition, subtraction, multiplication, division, mod, power, average, min, max, factorial, negation
@@ -11,11 +6,17 @@ DoubleMinus, Minus, DoubleSub
 additionally we define:
 Operator - the base class for all the
 OperatorTypes - an enum-like class that defines the types of operators: BEFORE, AFTER, BEFORE_AND_AFTER
-get_priorities_dicts() - a function that returns a list of dictionaries, ordered by 
+get_priorities_dicts() - a function that returns a list of dictionaries, ordered by
 priority, that contains all the operators classes and their chars
 get_all_operators() - a function that returns a list of all the childClasses of Operator
 get_general_priority() - a function that returns the priority of the operator_class
 """
+import math
+
+from custom_exceptions import InvalidMath
+from operands import Number
+
+
 
 
 class OperatorTypes:
@@ -478,7 +479,7 @@ class Factorial(Operator):
             raise InvalidMath(f"cannot do: {initial_value}! because result is too large")
 
     @staticmethod
-    def factorial(num1):
+    def factorial(num1: Number):
         """a helper function to the operation of the factorial class
         :param num1: a number that the factorial operation is performed on
         :raises InvalidMath: if the number is not a natural number or result is too large"""

@@ -22,3 +22,4 @@ def get_input():
         exit(1)
         return None
     return str_entered
+

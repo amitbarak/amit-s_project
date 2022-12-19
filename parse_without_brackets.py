@@ -18,10 +18,10 @@ import config
 import operators
 from custom_exceptions import MissingItem
 from operands import Number, Operand
-from nodes import Node2Childs, Node, Node1Child
+from nodes import Node2Child, Node, Node1Child
 
 
-def solve_expression_without_brackets(lst_expression):
+def solve_expression_without_brackets(lst_expression: list) -> Operand:
     """
     this function solves an expression without brackets and returns the result
     :raises: MissingItem if there is a missing item in the expression (like 2+ or !3 or 1 ** 2)
@@ -40,7 +40,7 @@ def solve_expression_without_brackets(lst_expression):
     return lst_expression[0]
 
 
-def parse_basic_expression(lst_former, lst_next, operator):
+def parse_basic_expression(lst_former: list, lst_next: list, operator) -> tuple:
     """
     this function receives the list of items before and after and the operator's class
     and returns a tree or a node of the operation
@@ -58,7 +58,7 @@ def parse_basic_expression(lst_former, lst_next, operator):
     if operator.TYPE == operators.OperatorTypes.BEFORE_AND_AFTER:
         lst_former, lst_next, operand_next = get_next_operand(lst_former, lst_next, operator)
         lst_former, lst_next, operand_former = get_former_operand(lst_former, lst_next, operator)
-        result = Node2Childs(Node(operand_former), Node(operand_next), operator)
+        result = Node2Child(Node(operand_former), Node(operand_next), operator)
         return lst_former, lst_next, result
     elif operator.TYPE == operators.OperatorTypes.BEFORE:
         lst_former, lst_next, operand_next = get_next_operand(lst_former, lst_next, operator)
@@ -70,7 +70,7 @@ def parse_basic_expression(lst_former, lst_next, operator):
         return lst_former, lst_next, result
 
 
-def get_former_operand(lst_former: list, lst_next: list, operator):
+def get_former_operand(lst_former: list, lst_next: list, operator) -> tuple:
     """
     this function receives the two lists of items before and after an operator, and the operator's class
     it parses all the former items until reaching an Operand
@@ -94,7 +94,7 @@ def get_former_operand(lst_former: list, lst_next: list, operator):
     return parse_basic_expression(lst_former, lst_next, operator1)
 
 
-def get_next_operand(lst_former, lst_next, operator):
+def get_next_operand(lst_former : list, lst_next : list, operator)-> tuple:
     """
     this function receives the two lists of items before and after an operator, and the operator's class
     it parses all the next items until reaching an Operand
@@ -117,7 +117,7 @@ def get_next_operand(lst_former, lst_next, operator):
     return parse_basic_expression(lst_former, lst_next, operator1)
 
 
-def check_MissingItems(lst_former, lst_next, operator):
+def check_MissingItems(lst_former: list, lst_next: list, operator):
     """
     this function checks accepts lists of the items before and after an operator
     if there aren't any items before or after the operator
@@ -137,7 +137,7 @@ def check_MissingItems(lst_former, lst_next, operator):
         raise MissingItem(f"there has to be a value before and after {operator.CHAR}")
 
 
-def parse_regular_priority(lst_expression, operators_dict: dict):
+def parse_regular_priority(lst_expression: list, operators_dict: dict) -> list:
     """
      this function receives a list of items and a dictionary of operators that
      are on same priority and inserts the operators and the operands they are
@@ -163,7 +163,7 @@ def parse_regular_priority(lst_expression, operators_dict: dict):
     return lst_new
 
 
-def parse_minuses(lst_expression):
+def parse_minuses(lst_expression: list) -> list:
     """
     this function parses the minuses in the expression into: double_minus, minus, double_sub
      and returns the changed list
@@ -175,7 +175,7 @@ def parse_minuses(lst_expression):
     return lst_expression
 
 
-def parse_priority_minuses(lst_expression):
+def parse_priority_minuses(lst_expression: list) -> list:
     """
     this function parses the sub chars in the expression into:
     singular subs and double subs and returns the changed list
@@ -207,7 +207,7 @@ def parse_priority_minuses(lst_expression):
     return lst_new
 
 
-def insert_minuses_to_all_nums(lst_expression):
+def insert_minuses_to_all_nums(lst_expression: list) -> list:
     """
     this function replaces all the subs and DoubleSub chars that are not operators with
     regular_minus or double_minus

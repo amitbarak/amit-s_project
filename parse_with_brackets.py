@@ -1,3 +1,18 @@
+"""
+this file is dedicated to parsing a list of the expression
+and creating a tree that represents the expression
+if there is an Operator or bracket that is not in the right place
+MissingItem exception will be raised and handled at create_root_node
+METHODS:
+    create_root_node:
+        this function receives a list that represents the expression and returns the root of the tree
+    replace:
+        this function receives a list and replaces the items from start_index to end_index with the inserted list
+    get_inner_expression:
+        this function receives a list that represents an expression and returns the
+        indexes of the first inner expression in the list for example: (9-0) + (1*2) -> 9-0
+"""
+
 import custom_exceptions
 import operands
 import config
@@ -5,14 +20,7 @@ from nodes import Node
 from parse_without_brackets import solve_expression_without_brackets
 
 
-"""
-this file is dedicated to parsing a list of the expression
-and creating a tree that represents the expression
-if there is an Operator or bracket that is not in the right place
-MissingItem exception will be raised and handled at create_root_node
-"""
-
-def create_root_node(lst_expression):
+def create_root_node(lst_expression: list) -> Node:
     """create a tree that represents the expression from a list that represents the expression
     :param lst_expression: a list that represents the expression
     :return: the root of the tree"""
@@ -36,7 +44,7 @@ def create_root_node(lst_expression):
     return Node(lst_expression[0])
 
 
-def replace(lst, start_index, end_index, inserted):
+def replace(lst: list, start_index: int, end_index: int, inserted) -> list:
     """
     this function receives a list and replaces the items from start_index to end_index with the inserted list
     :param lst: a list that will be replaced
@@ -48,7 +56,7 @@ def replace(lst, start_index, end_index, inserted):
     return lst[:start_index] + [inserted] + lst[end_index:]
 
 
-def get_inner_expression(lst_expression):
+def get_inner_expression(lst_expression: list) -> tuple[int, int]:
     """
     this function receives a list that represents an expression and returns the
     indexes of the first inner expression in the list for example: (9-0) + (1*2) -> 9-0

@@ -4,7 +4,7 @@ from operands import Number, Operand
 this file contains all of the Nodes classes:
 Node: the base class for all of the Nodes
 Node1Child: a Node that has one child
-Node2Children: a Node that has two children
+Node2Child: a Node that has two children
 """
 
 
@@ -36,7 +36,7 @@ class Node(Operand):
         return f"Node {self.operand}"
 
 
-class Node2Childs(Node):
+class Node2Child(Node):
     """
     represents a node with 2 childs
     Attributes:
@@ -45,7 +45,7 @@ class Node2Childs(Node):
     right_operand: Node - the right operand
     operator: Operator - the operator class that the node holds
     """
-    def __init__(self, left_operand, right_operand, operator):
+    def __init__(self, left_operand: Operand, right_operand: Operand, operator):
         super().__init__(left_operand)
         self.left_operand = left_operand
         self.right_operand = right_operand
@@ -72,7 +72,7 @@ class Node1Child(Node):
     child_node: Node - the child node
     operator: Operator - the operator class that the node holds
     """
-    def __init__(self, child_node, operator):
+    def __init__(self, child_node: Operand, operator):
         super().__init__(operator)
         self.child_node = child_node
         self.operator = operator

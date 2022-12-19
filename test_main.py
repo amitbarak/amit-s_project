@@ -1,10 +1,10 @@
-import pytest
-import calculate
-
 """
 this file tests calculations from calculate.py file
 which is the main file of the project
 """
+import calculate
+
+
 
 
 def test_equations_value():

@@ -1,6 +1,3 @@
-import operators
-import config
-
 """
 a module for validating the string expression
 contains the function is_valid which checks the validation of the string expression:
@@ -18,6 +15,11 @@ METHODS:
         check_not_empty(str_expression) -> bool
             checks if the expression is empty
 """
+
+import operators
+import config
+
+
 
 
 def is_valid(str_expression: str) -> bool:

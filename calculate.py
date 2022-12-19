@@ -1,3 +1,14 @@
+"""
+the exercise was made in way 2 for minuses handling
+here lies the main functions of the program:
+
+METHODS:
+    calculate:
+        this function receives a string that represents a mathematical expression
+        and returns the result of the calculation
+    main:
+        receives input from the user and prints the result
+"""
 from checkValidation import is_valid
 from operands import Number
 from parse_with_brackets import create_root_node
@@ -5,17 +16,7 @@ from list_creator import List_creator
 from interpreter import interpret
 from recive_input import get_input
 
-"""
-the exercise was made in way 2 for minuses handling
-here lies the main functions of the program:
 
-METHODS:
-    calculate:
-        this function receives a string that represents a mathematical expression 
-        and returns the result of the calculation
-    main:
-        receives input from the user and prints the result
-"""
 
 
 def calculate(str_expression: str) -> Number:

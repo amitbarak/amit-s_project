@@ -3,6 +3,7 @@ and the numbers class
 note: that Nodes are also Operands however
 they are defined in nodes.py"""
 
+
 class Operand:
     """this abstract class represents an operand
     __init__:
@@ -20,7 +21,6 @@ class Operand:
         pass
 
 
-
 class Number(Operand):
     """
     this class represents a number
@@ -31,12 +31,12 @@ class Number(Operand):
     get_value:
         returns the value of the number
     """
+
     def __init__(self, num):
         """
         initializes the class with a number
         :param num: list / string / number / float / int
         """
-        from config import ROUNDING_COUNT
         super().__init__()
         if type(num) is Number:
             self.__value = num.get_value()

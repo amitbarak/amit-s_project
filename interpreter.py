@@ -1,12 +1,14 @@
+"""this file contains the interpretation function:
+interpret(node_head: Node) activates the get_value() function of the node_head
+and thus for recursively calculates the value of the expression
+"""
+
 from custom_exceptions import InvalidMath
 from config import ROUNDING_COUNT
 from operands import Number
 from nodes import Node
 
-"""this file contains the interpretation function:
-interpret(node_head: Node) activates the get_value() function of the node_head
-and thus for recursively calculates the value of the expression
-"""
+
 
 
 def interpret(node_head: Node) -> Number:
